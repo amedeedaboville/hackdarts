@@ -48,10 +48,6 @@ public class Problem_AS {
 			kCharVInt.put(chars.get(i), i);
 		}
 		
-		for(int i=0; i<chars.size(); i++){
-			System.out.println(kCharVInt.get(charMap[i]) + " " + charMap[i]);
-		}
-		
 		size = chars.size();
 		boolean[][] bool = new boolean[size][size];
 		
@@ -70,13 +66,6 @@ public class Problem_AS {
 			bool[kCharVInt.get(secondChar)][kCharVInt.get(firstChar)] = true;
 		}
 		
-		/*
-		for(int i = 0; i<size; i++){
-			for(int j = 0; j<size; j++){
-				System.out.println(bool[i][j]);
-			}
-		}
-		*/
 		
 		startNodeInt = kCharVInt.get(startNode);
 		
@@ -86,28 +75,37 @@ public class Problem_AS {
 		else{
 			String usedNode = "";
 			searchForPaths(bool, kCharVInt.get(startNode), kCharVInt.get(endNode), usedNode);
-		}
-		
-		System.out.println(charMap[kCharVInt.get(startNode)]);
-		
-		String shortestPath = "";
-		int minPathIndex = 0;
-		int smallestPathSize = 10000;
-		for (int i=0; i<paths.size(); i++){
-			if (paths.get(i).length()<smallestPathSize){
-				smallestPathSize = paths.get(i).length();
-				minPathIndex = i;
-			}
-		}
-		shortestPath = paths.get(minPathIndex);
-		for (int i = 0; i<shortestPath.length(); i++){
-			char[] theInts = shortestPath.toCharArray();
-			shortestPath = "";
-			for (int j = 0; j<theInts.length; j++){
-				String dummyString = "";
-				dummyString += theInts[j];
-				shortestPath += (charMap[Integer.parseInt(dummyString)]);
-			}
+            if (paths.size() == 0){
+                System.out.println("No Route Available from "+ startNode +" to "+ endNode);
+            }
+            else{
+                System.out.println("Total Routes: " + paths.size());
+                String pathToOutput = "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ";
+                int minPathIndex = 0;
+                int smallestPathSize = 10000;
+                for (int i=0; i<paths.size(); i++){
+                    
+                    if (paths.get(i).length()<=smallestPathSize){
+                        String shortestPath = "F";
+                        String[] stringToConcat = paths.get(i).split("");
+                        int shortestPathLength = 1;
+                        for (int j = 1; j<stringToConcat.length; j++){
+                            shortestPath += " " +(charMap[Integer.parseInt(stringToConcat[j])]);
+                            shortestPathLength ++;
+                        }
+                        if (shortestPath.length() < pathToOutput.length()){
+                            smallestPathSize = shortestPathLength;
+                            pathToOutput = shortestPath;
+                        }
+                        if (shortestPath.length() == pathToOutput.length() && shortestPath.compareTo(pathToOutput) < 0){
+                                pathToOutput = shortestPath;
+          
+                        }
+                    }
+                }
+                System.out.println("Shortest Route Length: "+ smallestPathSize);
+                System.out.println("Shortest Route after Sorting of Routes of length " + smallestPathSize + ": "+pathToOutput);
+            }
 		}
 	}
 	public static void searchForPaths(boolean[][] bool, int curNode, int endNode, String usedNode){
@@ -120,13 +118,14 @@ public class Problem_AS {
 					else{
 						usedNode += Integer.toString(i);
 						paths.add(usedNode);
-						System.out.println(usedNode);
 					}
 				}
 				else{
 					if (i!=curNode && !usedNode.contains(Integer.toString(i)) && i!=startNodeInt){
+						String newUsedNode = usedNode;
+                        usedNode += Integer.toString(i);
 						searchForPaths(bool, i, endNode, usedNode);
-						usedNode += Integer.toString(i);
+                        usedNode = newUsedNode;
 					}
 				}
 			}
