@@ -25,8 +25,9 @@ while (i<maxI):
 list.reverse()
 
 
- 
-while(len(list)>1):
+listLength = 0
+while(len(list)!=listLength):
+    listLength = len(list)
     firstNums = []
     secondNums = []
     for l in list:
@@ -44,6 +45,13 @@ while(len(list)>1):
                         list.remove(l)
                         firstNums.remove(f)
                         should_restart = True
+                        
+finalList = []
+for l in list:
+    theVal = l.split(" ")[0]
+    if (finalList.count(theVal)==0):
+        print (theVal)
+        finalList.append(theVal)
 '''
 firstNums.clear()
 secondNums.clear()
