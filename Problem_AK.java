@@ -31,26 +31,23 @@ while(len(list)!=listLength):
                         should_restart = True
                         
 finalList = []
+count = 0
 
-for sl in startList:
-    count = 0
-    n = (sl.split(" "))
-    for l in list:
-        if (l.split(" ")[0] == n[1]):
-            if (finalList.count(sl)==0):
-                finalList.append(sl)
 should_restart = True
 while should_restart:
     should_restart = False
-    counter = 0
-    for l in finalList:
-        n = l.split(" ")[0]
-        for sl in startList:
-            if (sl.split(" ")[0] == n[0]):
-                counter+=1
-        if (counter>1):
-            finalList.remove(l)
-            should_restart = True
+    for sl in startList:
+        n = (sl.split(" "))
+        for l in list:
+            if (l.split(" ")[0] == n[1]):
+                if (finalList.count(sl)==0):
+                    finalList.append(sl)
+                    count+=1
+    if (count>1):
+        finalList.clear()
+        should_restart = False
+    if (count == 1):
+        list.append(finalList[0])
 
 finalL = []
 for l in finalList:
