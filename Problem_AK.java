@@ -1,78 +1,65 @@
 import sys
 
-list = []
+class node:
+    def __init__(self, index, weight):
+        self.index = index
+        self.weight = weight
+    def increment(self, weight):
+        self.weight += weight
+    def getWeight(self):
+        return self.weight
 
+list = []
+nodeList = []
 for line in sys.stdin:
     list.append(line.rstrip('\n'));
 
 list.reverse()
-list.pop()
+i = 0
+maxI = int(list.pop())
+while (i<maxI):
+    newNode = node(i,1)
+    nodeList.append(newNode)
+    i+=1
+    
 list.reverse()
 
-newList = []
-firstNums = []
-secondNums = []
-for l in list:   
-    n = (l.split(" "))
-    firstNums.append(n[0])
-    secondNums.append(n[1])
 
+ 
+while(len(list)>1):
+    firstNums = []
+    secondNums = []
+    for l in list:
+        n = (l.split(" "))
+        firstNums.append(n[0])
+        secondNums.append(n[1])
+    should_restart = True
+    while should_restart:
+        should_restart = False
+        for f in firstNums:
+            if (secondNums.count(f) == 0 and firstNums.count(f) == 1):
+                for l in list:
+                    if (l.split(" ")[0] == f):
+                        nodeList[int(f)].increment(nodeList[int(l.split(" ")[1])].getWeight())
+                        list.remove(l)
+                        firstNums.remove(f)
+                        should_restart = True
+'''
+firstNums.clear()
+secondNums.clear()
 should_restart = True
+aDict = {}
 while should_restart:
     should_restart = False
-    for f in firstNums:
-        if (secondNums.count(f) == 0 and firstNums.count(f) == 1):
-            firstNums.remove(f)
-            should_restart = True
+    for l in list:
+        firstNums.append(l.split(" ")[0])
+        aDict[l.split(" ")[0]] = 0
+        secondNums.append(l.split(" ")[1])
 
-should_restart = True
-while should_restart:
-    should_restart = False
-    for s in secondNums:
-        if (firstNums.count(s) == 0 and secondNums.count(s) == 1):
-            secondNums.remove(s)
-            should_restart = True
-        
-should_restart = True
-while should_restart:
-    should_restart = False        
-    for n in firstNums:
-        if(firstNums.count(n) == secondNums.count(n)):
-            firstNums.remove(n)
-            secondNums.remove(n)
-            should_restart = True
 
-should_restart = True
-while should_restart:
-    should_restart = False        
-    for n in secondNums:
-        if(firstNums.count(n) == secondNums.count(n)):
-            firstNums.remove(n)
-            secondNums.remove(n)
-            should_restart = True
+for f in firstNums:
+    aDict[f] += 1
 
-maxOccurrence = 0
-theStuff = 0
-theStuffList = []
-for n in firstNums:
-    if (firstNums.count(n) == maxOccurrence):
-        maxOccurrence = firstNums.count(n)
-        if (theStuffList.count(n)==0):
-            theStuffList.append(n)
-    if (firstNums.count(n) > maxOccurrence):
-        theStuffList.clear()
-        maxOccurrence = firstNums.count(n)
-        theStuffList.append(n)
+sorted(aDict.items(), key=lambda x: x[1])
+'''
 
-for n in secondNums:
-    if (secondNums.count(n) == maxOccurrence):
-        maxOccurrence = secondNums.count(n)
-        if (theStuffList.count(n)==0):
-            theStuffList.append(n)
-    if (secondNums.count(n) > maxOccurrence):
-        theStuffList.clear()
-        maxOccurrence = secondNums.count(n)
-        theStuffList.append(n)
-
-for nums in theStuffList:  
-    print(nums)
