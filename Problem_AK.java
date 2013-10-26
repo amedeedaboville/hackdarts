@@ -1,29 +1,14 @@
 import sys
-
-class node:
-    def __init__(self, index, weight):
-        self.index = index
-        self.weight = weight
-    def increment(self, weight):
-        self.weight += weight
-    def getWeight(self):
-        return self.weight
-
 list = []
 nodeList = []
 for line in sys.stdin:
     list.append(line.rstrip('\n'));
 
 list.reverse()
-i = 0
-maxI = int(list.pop())
-while (i<maxI):
-    newNode = node(i,1)
-    nodeList.append(newNode)
-    i+=1
-    
+list.pop()
 list.reverse()
 
+startList = list.copy()
 
 listLength = 0
 while(len(list)!=listLength):
@@ -41,33 +26,38 @@ while(len(list)!=listLength):
             if (secondNums.count(f) == 0 and firstNums.count(f) == 1):
                 for l in list:
                     if (l.split(" ")[0] == f):
-                        nodeList[int(f)].increment(nodeList[int(l.split(" ")[1])].getWeight())
                         list.remove(l)
                         firstNums.remove(f)
                         should_restart = True
                         
 finalList = []
-for l in list:
-    theVal = l.split(" ")[0]
-    if (finalList.count(theVal)==0):
-        print (theVal)
-        finalList.append(theVal)
-'''
-firstNums.clear()
-secondNums.clear()
+
+for sl in startList:
+    count = 0
+    n = (sl.split(" "))
+    for l in list:
+        if (l.split(" ")[0] == n[1]):
+            if (finalList.count(sl)==0):
+                finalList.append(sl)
 should_restart = True
-aDict = {}
 while should_restart:
     should_restart = False
-    for l in list:
-        firstNums.append(l.split(" ")[0])
-        aDict[l.split(" ")[0]] = 0
-        secondNums.append(l.split(" ")[1])
+    counter = 0
+    for l in finalList:
+        n = l.split(" ")[0]
+        for sl in startList:
+            if (sl.split(" ")[0] == n[0]):
+                counter+=1
+        if (counter>1):
+            finalList.remove(l)
+            should_restart = True
 
-
-for f in firstNums:
-    aDict[f] += 1
-
-sorted(aDict.items(), key=lambda x: x[1])
-'''
-
+finalL = []
+for l in finalList:
+    if (finalL.count(l.split(" ")[0])==0):
+        finalL.append(l.split(" ")[0])
+for l in list:
+    if (finalL.count(l.split(" ")[0])==0):
+        finalL.append(l.split(" ")[0])
+for l in finalL:
+    print(l)
