@@ -1,30 +1,29 @@
 import sys
-list = []
-nodeList = []
 strings = [line.rstrip('\n) 'for line in sys.stdin]
 n = strings.pop(0)
 edges = [l.split(" ") for  in strings]
 
 nodes = range(10)
 for node in nodes:
-  node.children = ()
-  node.parents = ()
-  node.before = true
-  node.after = true
+  node.children = set()
+  node.parents = set()
 
-  start = set()
-for edge in children:
-  if len(edge.parents) == 0:
+start = set(range(10))
+end = set(range(10))
 
-  nodes[edge[0]].children.append(edge[1])
-  node[edge[1]].before = false
-  node[edge[1]].parents.append(edge[0])
+for edge in edges:
+  start.remove(edge[0])
+  end.remove(edge[1])
+  edge[0].children.add(edge[1])
 
+paths = list(set())
+for node in start:
+    
+  if len(node.children) <= len(node.parents):
+      node.after = true;
 
-for node in nodes:
-  if not node.edges:
-    node.after = true;
-
-for node in nodes:
-  if node.parent:
+def getinters(node):
+  inters = node.children.map(lambda x: getinters(x)
+  return reduce(lambda x, y:x.intersection(y), inters)
+   
        
